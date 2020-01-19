@@ -21,9 +21,7 @@ class StateGraphOperations:
         initialState = StateDoubleNode(finalState, None, symbol, None)
         return StateGraph(initialState, finalState)
     
-    def unionStateGraph(self, regExR, regExS):
-        graphR = symbolSequenceStateGraph(regExR)
-        graphS = symbolSequenceStateGraph(regExS)
+    def unionStateGraph(self, graphR, graphS):
         finalState = StateDoubleNode(None, None, None, None)
         initialState = StateDoubleNode(graphR.initialState, graphS.initialState,
                                        self.emptySequenceSymbol, self.emptySequenceSymbol)
@@ -33,17 +31,14 @@ class StateGraphOperations:
         graphS.finalState.setLeftLabel(self.emptySequenceSymbol)
         return StateGraph(initialState, finalState)
     
-    def concatenationStateGraph(self, regExR, regExS):
-        graphR = symbolSequenceStateGraph(regExR)
-        graphS = symbolSequenceStateGraph(regExS)
+    def concatenationStateGraph(self, graphR, graphS):
         finalState = graphS.finalState
         initialState = graphR.initialState
         graphR.finalState.setLeftNode(graphS.initialState)
         graphR.finalState.setLeftLabel(self.emptySequenceSymbol)
         return StateGraph(initialState, finalState)
     
-    def closureAsteriskStateGraph(self, regExR):
-        graphR = symbolSequenceStateGraph(regExR)
+    def closureAsteriskStateGraph(self, graphR):
         finalState = StateDoubleNode(None, None, None, None)
         initialState = StateDoubleNode(graphR.initialState, finalState,
                                        self.emptySequenceSymbol, self.emptySequenceSymbol)
@@ -53,8 +48,7 @@ class StateGraphOperations:
         graphR.finalState.setRightLabel(self.emptySequenceSymbol)
         return StateGraph(initialState, finalState)
         
-    def closurePlusStateGraph(self, regExR):
-        graphR = symbolSequenceStateGraph(regExR)
+    def closurePlusStateGraph(self, graphR):
         finalState = StateDoubleNode(None, None, None, None)
         initialState = StateDoubleNode(graphR.initialState, None,
                                        self.emptySequenceSymbol, None)
