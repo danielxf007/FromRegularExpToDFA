@@ -4,7 +4,6 @@ def getWeigth(operator):
 
 def isOperator(symbol):
     return symbol in ")|.*+("
-
 def hasGreaterEqWeigth(operatorR, operatorS):
     return getWeigth(operatorR) >= getWeigth(operatorS)
 
@@ -33,11 +32,11 @@ def accumulate(symbols, operators):
             symbolk = ""
             if isUnary(operator):
                 symbolj = accumulation.pop()
-                accumulation.append(operator + " " + symbolj)
+                accumulation.append(operator + symbolj)
             else:
                 symbolk = accumulation.pop()
                 symbolj = accumulation.pop()
-                accumulation.append(operator + " " + symbolj + " " + symbolk)
+                accumulation.append(operator + symbolj + symbolk)
     return (accumulation, operatorsLeft)
                 
 def fromInfixToPrefix(regExR):

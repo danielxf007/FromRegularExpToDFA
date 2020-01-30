@@ -1,18 +1,11 @@
 class StateDoubleNode:
-    def __init__(self, leftNode, rightNode, leftLabel, rightLabel):
+    def __init__(self, leftNode, rightNode, leftLabel, rightLabel, stateName):
         self.leftNode = leftNode
-        self.rightNode = RightNode
+        self.rightNode = rightNode
         self.leftLabel = leftLabel
         self.rightLabel = rightLabel
-        
-    def setLeftNode(self, newLeftNode):
-        self.leftNode = newLeftNode
+        self.stateName = stateName
 
-    def setLeftLabel(self, newLeftLabel):
-        self.leftLabel = newLeftLabel
-        
-    def setRightNode(self, newRightNode):
-        self.rightNode = newRightNode
-        
-    def setRightLabel(self, newRightLabel):
-        self.rightLabel = newRightLabel
+    def setVariableValue(self, variableName, value):
+        if variableName in vars(self).keys():
+            vars(self)[variableName] = value
