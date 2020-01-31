@@ -1,3 +1,4 @@
+import stateOperations
 def isEmptySequence(sequence):
     return sequence == "$"
 
@@ -37,6 +38,8 @@ def divideRegEx(prefixRegEx):
     regEx = divideRegEx(prefixRegEx[len(leftRegEx)+1:])
     rightRegEx = combineToRegularEx(regEx)
     return (leftRegEx, operator, rightRegEx)
+	
+operations = StateGraphOperations("¬", "$")
 
 def getStateGraphOperation(symbol):
     if symbol == "*":
