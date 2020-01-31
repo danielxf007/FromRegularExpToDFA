@@ -38,15 +38,31 @@ def divideRegEx(prefixRegEx):
     rightRegEx = combineToRegularEx(regEx)
     return (leftRegEx, operator, rightRegEx)
 
+def getStateGraphOperation(symbol):
+    if symbol == "*":
+        return operations.closureAsteriskStateGraph
+    if symbol == "+":
+        return operations.closurePlusStateGraph
+    if symbol == "|":
+        return operations.unionStateGraph
+    if symbol == ".":
+        return operations.concatenationStateGraph
+    if symbol == "$":
+        return operations.emptySequenceStateGraph
+    if symbol == "¬":
+        return operations.nullSequenceStateGraph
+    return operations.symbolSequenceStateGraph
+
 def createNDFA(prefixRegEx):
     dividedRegEx = divideRegEx(prefixRegEx)
     if dividedRegEx[1] == None and dividedRegEx[2] == None:
-        print("Atomic Expression:" + dividedRegEx[0])
+        return getStateGraphOperation(dividedRegEx[0])(dividedRegEx[0])
     else:
         if dividedRegEx[2] == None:
-            print("Operator: " + dividedRegEx[1] + " aplied to: " + dividedRegEx[0])
-            createNDA(dividedRegEx[0])
+            unaryOperator = getStateGraphOperation(dividedRegEx[1])
+            return unaryOperator(createNDFA(dividedRegEx[0]))
         else:
-            print("Operator: " + dividedRegEx[1] + " aplied to: " + dividedRegEx[0] + " and " + dividedRegEx[2])
-            createNDA(dividedRegEx[0])
-            createNDA(dividedRegEx[2])
+            binaryOperator = getStateGraphOperation(dividedRegEx[1])
+            graphR = createNDFA(dividedRegEx[0])
+            graphS = createNDFA(dividedRegEx[2])
+            return binaryOperator(graphR, graphS)
