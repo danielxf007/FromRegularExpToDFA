@@ -48,14 +48,19 @@ def fromInfixToPrefix(regExR):
         if not isOperator(element):
             symbols.append(element)
         else:
-            if canInsert(condInsertOperators, element, operators):
-                operators.append(element)
-            else:
+            if element == ")":
                 accumulated = accumulate(symbols, operators)
                 symbols = accumulated[0]
                 operators = accumulated[1]
-                if element != ")":
+            else:
+                if canInsert(condInsertOperators, element, operators):
                     operators.append(element)
+                else:
+                    accumulated = accumulate(symbols, operators)
+                    symbols = accumulated[0]
+                    operators = accumulated[1]
+                    if element != ")":
+                        operators.append(element)
     while not listIsEmpty(operators):
         accumulated = accumulate(symbols, operators)
         symbols = accumulated[0]
