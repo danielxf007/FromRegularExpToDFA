@@ -65,8 +65,8 @@ def countOpenAndCloseParenthesis(openPar, closePar, symbols):
     counterOpenPar = 0
     counterClosePar = 0
     for element in symbols:
-        if element == "(":
+        if element == openPar:
             counterOpenPar +=1
-        if element == ")":
+        if element == closePar:
             counterClosePar += 1
     return (counterOpenPar, counterClosePar)
