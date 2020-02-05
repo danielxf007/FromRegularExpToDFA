@@ -1,31 +1,39 @@
-def getWeigth(operator):
-    cases = {")": 0, "|": 1, ".": 2, "*": 3, "+": 3, "(": 4}
+from toolz import curry
+@curry
+def getWeigth(openPar, unionOp, concatOp, starOp,
+    crossOp, closePar, operator):
+    cases = {openPar: 0, unionOp: 1, concatOp: 2, starOp: 3,
+	crossOp: 3, closePar: 4}
     return cases[operator]
 
 def isOperator(symbol):
     return symbol in ")|.*+("
-def hasGreaterEqWeigth(operatorR, operatorS):
-    return getWeigth(operatorR) >= getWeigth(operatorS)
+
+@curry
+def hasGreaterEqWeigth(weightF, operatorR, operatorS):
+    return weightF(operatorR) >= weightF(operatorS)
 
 def listIsEmpty(_list):
     return len(_list) == 0
 
-def condInsertOperators(operator, _list):
-    return (listIsEmpty(_list) or _list[len(_list)-1] == "(" or
-            hasGreaterEqWeigth(operator, _list[len(_list)-1]))
-
+@curry
+def condInsertOperators(weightF, openPar, operator, _list):
+    return (listIsEmpty(_list) or _list[len(_list)-1] == openPar or
+            hasGreaterEqWeigth(weightF)(operator)(_list[len(_list)-1]))
+@curry
 def canInsert(cond, element, _list):
-    return cond(element, _list)
+    return cond(element)(list)
 
 def isUnary(operator):
     return operator in "*+"
 
-def accumulate(symbols, operators):
+@curry
+def accumulate(openPar, symbols, operators):
     accumulation = symbols.copy()
     operatorsLeft = operators.copy()
     while not listIsEmpty(operatorsLeft):
         operator = operatorsLeft.pop()
-        if operator == "(":
+        if operator == openPar:
             break
         else:
             symbolj = ""
@@ -39,7 +47,7 @@ def accumulate(symbols, operators):
                 accumulation.append(operator + symbolj + symbolk)
     return (accumulation, operatorsLeft)
                 
-def fromInfixToPrefix(regExR):
+def fromInfixToPrefix(openPar, closePar, regExR):
     if len(regExR) == 1:
         return regExR
     symbols = []
@@ -48,7 +56,7 @@ def fromInfixToPrefix(regExR):
         if not isOperator(element):
             symbols.append(element)
         else:
-            if element == ")":
+            if element == closePar:
                 accumulated = accumulate(symbols, operators)
                 symbols = accumulated[0]
                 operators = accumulated[1]
@@ -59,7 +67,7 @@ def fromInfixToPrefix(regExR):
                     accumulated = accumulate(symbols, operators)
                     symbols = accumulated[0]
                     operators = accumulated[1]
-                    if element != ")":
+                    if element != openPar:
                         operators.append(element)
     while not listIsEmpty(operators):
         accumulated = accumulate(symbols, operators)

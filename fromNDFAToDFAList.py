@@ -25,19 +25,22 @@ def eClosure(emptySequence, stateNode):
             closure.add(element.rightNode)
     return closure
 
-def getNameStateSet(stateSet):
+@curry
+def getNameStateSet(startStr, endStr, separator, stateSet):
     name = ""
     for element in stateSet:
         name = element.stateName + ", "+ name
     name = name[0: len(name)-2]
-    return "{" + name + "}"
+    return startStr + name + endStr
 
-
-def fromNDFAToDFAList(NDFAListInitialState, NDFGraph, symbolSet, emptySequence):
+@curry
+def fromNDFAToDFAList(NDFAListInitialState, NDFGraph, symbolSet, emptySequence,
+    startStr, endStr, separator):
     currentStates = [eClosure(emptySequence)(NDFAListInitialState)]
     DFANodes = []
     for stateSet in currentStates:
-        currentDFANode =  DFANode(getNameStateSet(stateSet), [])
+        currentDFANode =  DFANode(getNameStateSet(startStr)(endStr)(separator)(stateSet),
+		[])
         DFATransitions = []
         for symbol in symbolSet:
             states = reduce(lambda x, y: x.union(y),
@@ -47,7 +50,7 @@ def fromNDFAToDFAList(NDFAListInitialState, NDFGraph, symbolSet, emptySequence):
                                       set())), 
                            set())
             if len(states) > 0 and not states in currentStates:
-                DFANodeStateName = getNameStateSet(states)
+                DFANodeStateName = getNameStateSet(startStr)(endStr)(separator)(states)
                 currentStates.append(states)
                 DFATransitions.append((DFANodeStateName, symbol))
         if len(DFATransitions) > 0:
