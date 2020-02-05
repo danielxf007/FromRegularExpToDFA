@@ -41,6 +41,36 @@ def divideRegEx(prefixRegEx):
 	
 operations = StateGraphOperations("¬", "$")
 
+def simplifyRegEx(prefixRegEx):
+    if isAtomicSequence(prefixRegEx[0]):
+        return prefixRegEx[0]
+    dividedRegEx = divideRegEx(prefixRegEx)
+    if isUnary(dividedRegEx[1]):
+        regEx = None
+        if dividedRegEx[0][0] == "*":
+            regEx = simplifyRegEx(dividedRegEx[0][1:])
+            return  regEx
+        else:
+            regEx = simplifyRegEx(dividedRegEx[0])
+        if isEmptySequence(regEx):
+            return "$"
+        if isNullSequence(regEx):
+            return "$"
+        return dividedRegEx[1]+regEx
+    leftRegEx = simplifyRegEx(dividedRegEx[0])
+    rightRegEx = simplifyRegEx(dividedRegEx[2])
+    if dividedRegEx[1] == "|":
+        if leftRegEx == rightRegEx:
+            return leftRegEx
+    if dividedRegEx[1] == ".":
+        if isNullSequence(leftRegEx) or isNullSequence(rightRegEx):
+            return "¬"
+        if isEmptySequence(leftRegEx):
+            return rightRegEx
+        if isEmptySequence(rightRegEx):
+            return leftRegEx
+    return dividedRegEx[1] + leftRegEx + rightRegEx
+
 def getStateGraphOperation(symbol):
     if symbol == "*":
         return operations.closureAsteriskStateGraph
