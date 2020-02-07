@@ -1,7 +1,6 @@
 from toolz import curry
 from functools import reduce
 import DFANode
-@curry
 def eTransitionFENDFA(symbol, stateNode):
     states = set()
     if stateNode.leftNode != None and  stateNode.leftLabel == symbol:
@@ -9,7 +8,7 @@ def eTransitionFENDFA(symbol, stateNode):
     if stateNode.rightNode != None and  stateNode.rightLabel == symbol:
         states.add(stateNode.rightNode)
     return states
-@curry
+
 def eClosure(emptySequence, stateNode):
     currentVisitedNodes = []
     currentVisitedNodes.append(stateNode)
@@ -25,7 +24,6 @@ def eClosure(emptySequence, stateNode):
             closure.add(element.rightNode)
     return closure
 
-@curry
 def getNameStateSet(startStr, endStr, separator, stateSet):
     name = ""
     for element in stateSet:
@@ -33,7 +31,6 @@ def getNameStateSet(startStr, endStr, separator, stateSet):
     name = name[0: len(name)-2]
     return startStr + name + endStr
 
-@curry
 def fromNDFAToDFAList(NDFAListInitialState, NDFGraph, symbolSet, emptySequence,
     startStr, endStr, separator):
     currentStates = [eClosure(emptySequence)(NDFAListInitialState)]
