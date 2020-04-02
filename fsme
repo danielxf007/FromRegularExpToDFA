@@ -1,11 +1,11 @@
 digraph finite_state_machine {
 	rankdir=LR size="8,5"
 	node [shape=doublecircle]
-	"{q18, q2, q15, q19, q10, q8, q5, q1, q13, q12, q7, q16, q4, q3}"
+	"{q3, q4, q12, q2, q10, q16, q8, q19, q18, q15, q1, q13, q7, q5}"
 	node [shape=circle]
-	"{q2, q0, q8, q5, q1, q13, q12, q7, q4, q3}" -> "{q2, q13, q10, q8, q5, q1, q12, q7, q4, q3, q6}" [label=GO]
-	"{q2, q0, q8, q5, q1, q13, q12, q7, q4, q3}" -> "{q2, q15, q11, q10, q8, q5, q1, q13, q12, q7, q4, q3}" [label=GOTO]
-	"{q2, q0, q8, q5, q1, q13, q12, q7, q4, q3}" -> "{q2, q15, q19, q10, q8, q5, q1, q13, q12, q7, q16, q4, q3}" [label=TOO]
-	"{q2, q0, q8, q5, q1, q13, q12, q7, q4, q3}" -> "{q2, q13, q17, q19, q15, q10, q8, q5, q1, q14, q12, q7, q4, q3, q9}" [label=ON]
-	"{q2, q13, q17, q19, q15, q10, q8, q5, q1, q14, q12, q7, q4, q3, q9}" -> "{q18, q2, q15, q19, q10, q8, q5, q1, q13, q12, q7, q16, q4, q3}" [label=TOO]
+	"{q3, q4, q12, q0, q2, q8, q1, q13, q7, q5}" -> "{q3, q6, q12, q2, q10, q4, q8, q1, q13, q7, q5}" [label=GO]
+	"{q3, q4, q12, q0, q2, q8, q1, q13, q7, q5}" -> "{q3, q11, q12, q2, q10, q4, q8, q15, q1, q13, q7, q5}" [label=GOTO]
+	"{q3, q4, q12, q0, q2, q8, q1, q13, q7, q5}" -> "{q3, q4, q12, q2, q10, q16, q8, q19, q15, q1, q13, q7, q5}" [label=TOO]
+	"{q3, q4, q12, q0, q2, q8, q1, q13, q7, q5}" -> "{q3, q17, q4, q12, q2, q10, q14, q8, q19, q15, q1, q9, q13, q7, q5}" [label=ON]
+	"{q3, q17, q4, q12, q2, q10, q14, q8, q19, q15, q1, q9, q13, q7, q5}" -> "{q3, q4, q12, q2, q10, q16, q8, q19, q18, q15, q1, q13, q7, q5}" [label=TOO]
 }
